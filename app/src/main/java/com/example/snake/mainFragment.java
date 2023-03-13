@@ -25,11 +25,12 @@ public class mainFragment extends Fragment {
         // Récupération par id
         btn_jouer = view.findViewById(R.id.btn_jouer);
 
-        // Lance l'activité scan_code_qr au clique du bouton
+        // Lance l'activité snakeActivity au clique du bouton
         btn_jouer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Lance l'activité snakeActivity
+                startActivity(new Intent(getContext(),snakeActivity.class));
                 }
         });
         return view;
