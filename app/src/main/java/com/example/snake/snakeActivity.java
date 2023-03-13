@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class snakeActivity extends AppCompatActivity implements SensorEventListener {
@@ -16,6 +17,8 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
     SensorManager sensorManager;
     Sensor Accelerometre;
     ImageView carre;
+
+    int direction = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +44,38 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
         int largeurEcran = Resources.getSystem().getDisplayMetrics().widthPixels;
         int hauteurEcran = Resources.getSystem().getDisplayMetrics().heightPixels;
 
+        // Récupère les dimensions du carré
+        int largeurCarre = carre.getWidth();
+        int hauteurCarre = carre.getHeight();
+
         // Récupère les valeurs de gavité x et y
         float x = (int) sensorEvent.values[0];
         float y = (int) sensorEvent.values[1];
 
-        float largeurCarre = carre.getWidth();
-        float hauteurCarre = carre.getHeight();
+//        Log.d("coordonnéeX", "x: "+ x);
+//        Log.d("coordonnéeY", "y: "+ y);
 
-
-        // Augmentation de la vitesse de déplacement du carré
-        x *= 5.0f;
-        y *= 5.0f;
 
         // Récupère les nouvelles positions
-        float newPosX = carre.getX() - x;
-        float newPosY = carre.getY() + y;
+        int newPosX = (int) (carre.getX());
+        int newPosY = (int) (carre.getY());
+
+//        Log.d("coordonnéeX", "x: "+ newPosX);
+
+        // Tests de directions du carré
+        // Si orientation X > ou < que 2, change la direction du carré
+        // Même chose pour Y
+        if (x >= 3){
+            direction = 1;
+            newPosX -= 10;
+
+        } else if (x <= -3) {
+            newPosX += 10;
+        } else if (y >= 3){
+            newPosY += 10;
+        } else if (y <= -3) {
+            newPosY -= 10;
+        }
 
 
         // Test pour que le carré ne sorte pas de l'écran
@@ -63,13 +83,13 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
         if (newPosX < 0) {
             newPosX = 0;
         } else if (newPosX > largeurEcran - largeurCarre) {
-            newPosX = largeurEcran - largeurCarre;
+            newPosX = (largeurEcran - largeurCarre);
         }
         // Tests pour la hauteur
         if (newPosY < 0) {
             newPosY = 0;
         } else if (newPosY > hauteurEcran - hauteurCarre) {
-            newPosY = hauteurEcran - hauteurCarre;
+            newPosY = (hauteurEcran - hauteurCarre);
         }
 
 
@@ -87,5 +107,14 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+    /**
+     * Enregistre l'événement du capteur
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Enregistre un sensorEventListener pour mettre a jour les valeurs x et y
+        sensorManager.registerListener(this, Accelerometre, SensorManager.SENSOR_DELAY_UI);
     }
 }
