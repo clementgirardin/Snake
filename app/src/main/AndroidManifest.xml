@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Snake"
         tools:targetApi="31">
         <activity
+            android:name=".snakeActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
