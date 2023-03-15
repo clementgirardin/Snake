@@ -8,6 +8,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:titleTextColor="@color/black"
         android:supportsRtl="true"
         android:theme="@style/Theme.Snake"
         tools:targetApi="31">
