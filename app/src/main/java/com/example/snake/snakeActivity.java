@@ -3,6 +3,7 @@ package com.example.snake;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class snakeActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -67,17 +69,31 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
                     break;
             }
 
+
             // Test pour que le carré ne sorte pas de l'écran
             // Tests pour la largeur
             if (newPosX < 0) {
+                // Affiche le message "Perdu" et retourne a la page d'accueil
+                Toast.makeText(getApplicationContext(), "Zut...Perdu!", Toast.LENGTH_SHORT).show();
+                finish();
                 newPosX = 0;
+
             } else if (newPosX > largeurEcran - largeurCarre) {
+                // Affiche le message "Perdu" et retourne a la page d'accueil
+                Toast.makeText(getApplicationContext(), "Zut...Perdu!", Toast.LENGTH_SHORT).show();
+                finish();
                 newPosX = (largeurEcran - largeurCarre);
             }
             // Tests pour la hauteur
             if (newPosY < 0) {
+                // Affiche le message "Perdu" et retourne a la page d'accueil
+                Toast.makeText(getApplicationContext(), "Zut...Perdu!", Toast.LENGTH_SHORT).show();
+                finish();
                 newPosY = 0;
             } else if (newPosY > hauteurEcran - hauteurCarre) {
+                // Affiche le message "Perdu" et retourne a la page d'accueil
+                Toast.makeText(getApplicationContext(), "Zut...Perdu!", Toast.LENGTH_SHORT).show();
+                finish();
                 newPosY = (hauteurEcran - hauteurCarre);
             }
 
