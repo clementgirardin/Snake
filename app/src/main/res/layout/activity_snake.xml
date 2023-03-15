@@ -11,6 +11,8 @@
         android:id="@+id/carre"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/carre" />
 
 </RelativeLayout>
