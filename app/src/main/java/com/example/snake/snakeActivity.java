@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -18,7 +19,73 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
     Sensor Accelerometre;
     ImageView carre;
 
+
+
+    Handler handler = new Handler();
+
+    // 1:droite, 2:bas, 3:gauche, 4:haut
     int direction = 0;
+
+    // Runnable qui met à jour la position du carré toutes les 5ms
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            // Récupération des délimitations de l'écran
+            int largeurEcran = Resources.getSystem().getDisplayMetrics().widthPixels;
+            int hauteurEcran = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+            // Récupère les dimensions du carré
+            int largeurCarre = carre.getWidth();
+            int hauteurCarre = carre.getHeight();
+
+            // Récupère les nouvelles positions
+            int newPosX = (int) (carre.getX());
+            int newPosY = (int) (carre.getY());
+
+
+            // Mise à jour de la position en fonction de la direction
+            switch (direction) {
+                // Case 0 sans code pour quel le carré reste immobile au départ du jeu
+                case 0:
+                    break;
+                case 1:
+                    newPosX += 5;
+                    break;
+                case 2:
+                    newPosY += 5;
+                    break;
+                case 3:
+                    newPosX -= 5;
+                    break;
+                case 4:
+                    newPosY -= 5;
+                    break;
+                default:
+                    break;
+            }
+
+            // Test pour que le carré ne sorte pas de l'écran
+            // Tests pour la largeur
+            if (newPosX < 0) {
+                newPosX = 0;
+            } else if (newPosX > largeurEcran - largeurCarre) {
+                newPosX = (largeurEcran - largeurCarre);
+            }
+            // Tests pour la hauteur
+            if (newPosY < 0) {
+                newPosY = 0;
+            } else if (newPosY > hauteurEcran - hauteurCarre) {
+                newPosY = (hauteurEcran - hauteurCarre);
+            }
+
+            // Positionne le carré avec ses nouvelles positions x et y
+            carre.setX(newPosX);
+            carre.setY(newPosY);
+
+            // Relance la mise à jour toutes les 5ms
+            handler.postDelayed(this, 5);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +99,12 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         // Affectation du capteur "ACCELEROMER" à la variable Accelerometre
         Accelerometre = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        // Lance le déplacement du carré toutes les 5 milisecondes
+        handler.postDelayed(runnable, 5);
+
     }
+
 
     /**
      * Méthode appelée lorsque les données capteurs sont MAJ
@@ -40,62 +112,23 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
      */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        // Récupération des délimitations de l'écran
-        int largeurEcran = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int hauteurEcran = Resources.getSystem().getDisplayMetrics().heightPixels;
-
-        // Récupère les dimensions du carré
-        int largeurCarre = carre.getWidth();
-        int hauteurCarre = carre.getHeight();
 
         // Récupère les valeurs de gavité x et y
         float x = (int) sensorEvent.values[0];
         float y = (int) sensorEvent.values[1];
 
-//        Log.d("coordonnéeX", "x: "+ x);
-//        Log.d("coordonnéeY", "y: "+ y);
-
-
-        // Récupère les nouvelles positions
-        int newPosX = (int) (carre.getX());
-        int newPosY = (int) (carre.getY());
-
-//        Log.d("coordonnéeX", "x: "+ newPosX);
-
         // Tests de directions du carré
         // Si orientation X > ou < que 2, change la direction du carré
         // Même chose pour Y
         if (x >= 3){
-            direction = 1;
-            newPosX -= 10;
-
+            direction = 3;
         } else if (x <= -3) {
-            newPosX += 10;
+            direction = 1;
         } else if (y >= 3){
-            newPosY += 10;
+            direction = 2;
         } else if (y <= -3) {
-            newPosY -= 10;
+            direction = 4;
         }
-
-
-        // Test pour que le carré ne sorte pas de l'écran
-        // Tests pour la largeur
-        if (newPosX < 0) {
-            newPosX = 0;
-        } else if (newPosX > largeurEcran - largeurCarre) {
-            newPosX = (largeurEcran - largeurCarre);
-        }
-        // Tests pour la hauteur
-        if (newPosY < 0) {
-            newPosY = 0;
-        } else if (newPosY > hauteurEcran - hauteurCarre) {
-            newPosY = (hauteurEcran - hauteurCarre);
-        }
-
-
-        // Positionne le carré avec les nouvelles positions
-        carre.setX(newPosX);
-        carre.setY(newPosY);
     }
 
     /**
