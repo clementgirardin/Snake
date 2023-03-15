@@ -52,16 +52,16 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
                 case 0:
                     break;
                 case 1:
-                    newPosX += 5;
+                    newPosX += 3;
                     break;
                 case 2:
-                    newPosY += 5;
+                    newPosY += 3;
                     break;
                 case 3:
-                    newPosX -= 5;
+                    newPosX -= 3;
                     break;
                 case 4:
-                    newPosY -= 5;
+                    newPosY -= 3;
                     break;
                 default:
                     break;
