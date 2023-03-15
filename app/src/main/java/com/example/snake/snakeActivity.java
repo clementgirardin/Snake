@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 public class snakeActivity extends AppCompatActivity implements SensorEventListener {
@@ -103,6 +104,11 @@ public class snakeActivity extends AppCompatActivity implements SensorEventListe
         // Lance le déplacement du carré toutes les 5 milisecondes
         handler.postDelayed(runnable, 5);
 
+        // Met l'aaplication en pleine écran (comme en F11)
+        // (Cache la bare de navigation, la barre d'informations en haut de l'écran)
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
 

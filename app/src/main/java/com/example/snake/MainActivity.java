@@ -15,6 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Met l'aaplication en pleine écran (comme en F11)
+        // (Cache la bare de navigation, la barre d'informations en haut de l'écran)
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
         // Récupération par id
         btn_jouer = findViewById(R.id.btn_jouer);
 
